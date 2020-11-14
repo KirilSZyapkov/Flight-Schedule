@@ -1,0 +1,43 @@
+function flightSchedule(input){
+let listOfFlights = input.shift();
+let changes = input.shift();
+let flightStatus =input[0][0];
+let flights = {};
+    listOfFlights = listOfFlights.map(x=> x.split(` `));
+    changes = changes.map(x=> x.split(` `));
+for(let [numFlight, destination] of listOfFlights){
+
+        flights[numFlight] = destination;
+
+}
+let canceledFlights={};
+
+for(let [flightNum, status] of changes){
+    if(status === "Cancelled"){
+        if(flights.hasOwnProperty(flightNum)){
+            canceledFlights[flightNum] = flights[flightNum];
+            delete flights[flightNum]
+        }
+    }
+}
+
+let sorted = Object.entries(canceledFlights);
+sorted.sort((a,b)=>a[1].localeCompare(b[1]));
+canceledFlights = {};
+for (let [num, destination] of sorted){
+    canceledFlights[num] = destination;
+    }
+
+if(flightStatus === "Cancelled"){
+    let keys = Object.keys(canceledFlights);
+    for(let key of keys){
+         console.log(`{ Destination: '${canceledFlights[key]}', Status: '${flightStatus}' }`);
+    }
+} else if (flightStatus === "Ready to fly"){
+    let keys = Object.keys(flights);
+    for(let key of keys){
+        console.log(`{ Destination: '${flights[key]}', Status: '${flightStatus}' }`);
+    }
+}
+
+}
